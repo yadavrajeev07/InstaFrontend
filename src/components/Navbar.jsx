@@ -80,7 +80,7 @@ const Navbar = () => {
           <span>Notifications</span>
         </div>
 
-        <Link to="/post" className={itemClass(isActive("/post"))}>
+        <Link to="/create" className={itemClass(isActive("/create"))}>
           <FiPlusSquare size={24} />
           <span>Create</span>
         </Link>

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const suggestions = [
   {
     id: 1,
@@ -25,13 +27,19 @@ const Sidebar = () => {
       {/* Logged in user */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
+          <Link to="/profile">
           <img
             src="https://i.pravatar.cc/150?img=8"
             className="w-11 h-11 rounded-full"
             alt="me"
           />
+          </Link>
+          
           <div>
-            <p className="text-sm font-semibold">your_username</p>
+            <Link to="/profile">
+              <p className="text-sm font-semibold">your_username</p>
+            </Link>
+            
             <p className="text-xs text-gray-500">Your Name</p>
           </div>
         </div>

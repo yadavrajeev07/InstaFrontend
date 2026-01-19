@@ -1,95 +1,97 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
-import { usePosts } from "../context/PostContext"; // <-- import PostContext
+import CropPost from "./CropPost";
+import { usePosts } from "../context/PostContext";
 import { useAuth } from "../context/AuthContext";
 
 const CreatePost = () => {
-  const { addPost } = usePosts(); // function to add post globally
-  const { user } = useAuth(); // current logged in user
+  const { addPost } = usePosts();
+  const { user } = useAuth();
 
   const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [step, setStep] = useState("select");
   const [caption, setCaption] = useState("");
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    setImage(file);
-    setPreview(URL.createObjectURL(file));
+    setImage(URL.createObjectURL(file));
+    setStep("crop");
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!image) {
-      alert("Please select an image!");
-      return;
-    }
-
-    // Add post to global state
+  const handleShare = () => {
     addPost({
       id: Date.now(),
-      image: preview,
+      image,
       caption,
       username: user.username,
       likes: 0,
     });
-
-    // Reset form
-    setCaption("");
+    setStep("select");
     setImage(null);
-    setPreview(null);
-
-    alert("Post shared successfully!");
+    setCaption("");
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-[#fafafa] min-h-screen">
       <Navbar />
 
-      <div className="max-w-md mx-auto bg-white mt-10 border rounded">
-        <h2 className="text-center font-semibold border-b p-3">
-          Create new post
-        </h2>
+      {step === "select" && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+          <div className="bg-white w-[730px] rounded-xl overflow-hidden">
+            <div className="text-center py-3 font-semibold border-b">
+              Create new post
+            </div>
 
-        <form onSubmit={handleSubmit} className="p-4 space-y-4">
-          {/* Image Preview */}
-          {preview ? (
-            <img
-              src={preview}
-              alt="preview"
-              className="w-full h-64 object-cover rounded"
-            />
-          ) : (
-            <label className="flex flex-col items-center justify-center h-64 border-2 border-dashed rounded cursor-pointer text-gray-400">
-              <span>Select image</span>
+            <label className="h-[520px] flex flex-col items-center justify-center gap-4 cursor-pointer">
+              <h3 className="text-xl">Drag photos and videos here</h3>
               <input
                 type="file"
                 accept="image/*"
                 hidden
                 onChange={handleImageChange}
               />
+              <span className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold">
+                Select from computer
+              </span>
             </label>
-          )}
+          </div>
+        </div>
+      )}
 
-          {/* Caption */}
-          <textarea
-            placeholder="Write a caption..."
-            className="w-full border p-2 rounded resize-none"
-            rows="3"
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-          />
+      {step === "crop" && (
+        <CropPost
+          image={image}
+          onBack={() => setStep("select")}
+          onNext={() => setStep("caption")}
+        />
+      )}
 
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded font-semibold hover:bg-blue-600"
-          >
-            Share
-          </button>
-        </form>
-      </div>
+      {step === "caption" && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+          <div className="bg-white w-[730px] rounded-xl overflow-hidden flex">
+            <img src={image} className="w-[430px] object-cover" />
+
+            <div className="flex-1 p-4 flex flex-col">
+              <span className="font-semibold mb-2">{user.username}</span>
+
+              <textarea
+                placeholder="Write a caption..."
+                className="flex-1 outline-none resize-none"
+                value={caption}
+                onChange={(e) => setCaption(e.target.value)}
+              />
+
+              <button
+                onClick={handleShare}
+                className="text-blue-500 font-semibold mt-4"
+              >
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
