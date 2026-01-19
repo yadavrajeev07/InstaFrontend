@@ -4,15 +4,19 @@ import Sidebar from "../components/Sidebar";
 
 const Home = () => {
   return (
-    <div className="bg-gray-50 min-h-screen">
+   <div className="ml-[240px] bg-white min-h-screen">
+
+      {/* Top Navbar */}
       <Navbar />
-      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row mt-6 px-4">
-        {/* Feed */}
-        <main className="flex-1 lg:mr-6">
+
+      {/* Page Content */}
+      <div className="max-w-6xl mx-auto flex gap-6 px-4 pt-5">
+        {/* Feed Section */}
+        <main className="flex-1 max-w-[470px] mx-auto">
           <Feed />
         </main>
 
-        {/* Sidebar */}
+        {/* Right Profile / Suggestions */}
         <aside className="hidden lg:block w-[350px]">
           <Sidebar />
         </aside>
