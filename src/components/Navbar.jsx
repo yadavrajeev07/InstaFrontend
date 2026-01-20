@@ -55,30 +55,36 @@ const Navbar = () => {
           <span>Home</span>
         </Link>
 
-        <div className={itemClass(false)}>
+        <Link to="/search" className={itemClass(isActive("/search"))}>
           <FiSearch size={24} />
           <span>Search</span>
-        </div>
+        </Link>
 
-        <div className={itemClass(false)}>
+
+        <Link to="/explore" className={itemClass(isActive("/explore"))}>
           <FiCompass size={24} />
           <span>Explore</span>
-        </div>
+        </Link>
+
 
         <div className={itemClass(false)}>
           <FiFilm size={24} />
           <span>Reels</span>
         </div>
 
-        <div className={itemClass(false)}>
+        <Link to="/messages" className={itemClass(isActive("/messages"))}>
           <FiSend size={24} />
           <span>Messages</span>
-        </div>
+        </Link>
 
-        <div className={itemClass(false)}>
-          <FiHeart size={24} />
-          <span>Notifications</span>
-        </div>
+        <Link
+  to="/notifications"
+  className={itemClass(isActive("/notifications"))}
+>
+  <FiHeart size={24} />
+  <span>Notifications</span>
+</Link>
+
 
         <Link to="/create" className={itemClass(isActive("/create"))}>
           <FiPlusSquare size={24} />

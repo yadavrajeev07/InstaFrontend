@@ -6,6 +6,10 @@ import Profile from "../pages/Profile";
 import CreatePost from "../pages/CreatePost";
 import PrivateRoute from "../components/PrivateRoute";
 import Landing from "../pages/Landing";
+import Chat from "../pages/Chat";
+import Search from "../pages/Search";
+import Explore from "../pages/Explore";
+import Notifications from "../pages/Notifications";
 const AppRoutes = () => {
   return (
   <Routes>
@@ -41,6 +45,39 @@ const AppRoutes = () => {
       </PrivateRoute>
     }
   />
+  <Route
+  path="/messages"
+  element={
+    <PrivateRoute>
+      <Chat />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="/search"
+  element={
+    <PrivateRoute>
+      <Search />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="/explore"
+  element={
+    <PrivateRoute>
+      <Explore />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="/notifications"
+  element={
+    <PrivateRoute>
+      <Notifications />
+    </PrivateRoute>
+  }
+/>
+
 </Routes>
   );
 };
