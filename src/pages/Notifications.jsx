@@ -99,7 +99,7 @@ const Notifications = () => {
 
   const unreadCount = notificationList.filter(n => !n.read).length;
 
-  return (
+  return (  
     <div className="flex min-h-screen bg-white">
       {/* Fixed Sidebar Navbar */}
       <div className="fixed top-0 left-0 h-screen w-[72px] md:w-[244px] border-r border-gray-200 bg-white">
