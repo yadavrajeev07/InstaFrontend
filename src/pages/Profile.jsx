@@ -134,7 +134,7 @@ const Profile = () => {
                 {/* Bio */}
                 <div className="space-y-1">
                   <div className="font-semibold text-lg">{user?.fullName || "Artist"}</div>
-                  <div className="text-gray-600">{user?.bio || "Give me a cigarette 🚬"}</div>
+                  <div className="text-gray-600">{user?.bio || "Give me a fu*king cigarette 🚬"}</div>
                 </div>
               </div>
             </div>

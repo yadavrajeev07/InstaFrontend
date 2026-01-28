@@ -1,32 +1,55 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext"; // ✅ ADD
+import { useAuth } from "../context/AuthContext";
 import landingImg from "../assets/images/landing-2x.png";
+import api from "../api/axios"; // ✅ axios instance
 
 const Landing = () => {
-  const navigate = useNavigate();           // ✅ ADD
-  const { login } = useAuth();               // ✅ ADD
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  // ✅ ADD state
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // ✅ ADD handler
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // simple frontend login
-    login({ username });
+    // ❌ prevent empty login
+    if (!username || !password) {
+      setError("Please fill all fields");
+      return;
+    }
 
-    // redirect after login
-    navigate("/home"); // or "/home"
+    try {
+      setLoading(true);
+      setError("");
+
+      const { data } = await api.post("/auth/login", {
+        username: username,
+        password,
+      });
+
+      // ✅ save user + token
+      login(data.user, data.token);
+      localStorage.setItem("token", data.token);
+
+      navigate("/home");
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Invalid username or password"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="flex gap-10 max-w-6xl w-full px-4">
 
-        {/* Left Side - Instagram Mockup Image */}
+        {/* Left Side Image */}
         <div className="hidden md:flex w-1/2 justify-center">
           <img
             src={landingImg}
@@ -35,12 +58,12 @@ const Landing = () => {
           />
         </div>
 
-        {/* Right Side - Login / Signup Form */}
+        {/* Right Side */}
         <div className="flex flex-col items-center w-full md:w-96 space-y-4">
 
-          {/* Login Card */}
           <div className="flex flex-col items-center w-full p-8 space-y-4">
-            {/* Instagram Logo */}
+
+            {/* Logo */}
             <div className="mb-4">
               <i
                 role="img"
@@ -55,69 +78,64 @@ const Landing = () => {
                   height: "51px",
                   display: "inline-block",
                 }}
-              ></i>
+              />
             </div>
+
+            {/* Error */}
+            {error && (
+              <p className="text-red-500 text-sm text-center">{error}</p>
+            )}
 
             {/* Form */}
             <form
               className="w-full flex flex-col space-y-3"
-              onSubmit={handleLogin}        // ✅ ADD
+              onSubmit={handleLogin}
             >
               <input
                 type="text"
                 placeholder="Phone number, username or email"
-                value={username}            // ✅ ADD
-                onChange={(e) => setUsername(e.target.value)} // ✅ ADD
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full p-2 bg-gray-100 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 text-sm"
               />
 
               <input
                 type="password"
                 placeholder="Password"
-                value={password}            // ✅ ADD
-                onChange={(e) => setPassword(e.target.value)} // ✅ ADD
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 bg-gray-100 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 text-sm"
               />
 
               <button
                 type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded font-semibold text-sm hover:bg-blue-600 hover:scale-105 transition-transform duration-150"
+                disabled={loading}
+                className="w-full bg-blue-500 text-white py-2 rounded font-semibold text-sm hover:bg-blue-600 transition disabled:opacity-50"
               >
-                Log In
+                {loading ? "Logging in..." : "Log In"}
               </button>
             </form>
 
-            {/* OR Separator */}
+            {/* OR */}
             <div className="flex items-center w-full my-2">
               <hr className="flex-1 border-gray-300" />
               <span className="px-2 text-gray-400 text-sm">OR</span>
               <hr className="flex-1 border-gray-300" />
             </div>
 
-            {/* Facebook Login */}
-            <button className="text-blue-700 font-semibold flex items-center justify-center gap-2 text-sm hover:underline">
-              <svg
-                aria-label="Log in with Facebook"
-                fill="currentColor"
-                height="20"
-                width="20"
-                viewBox="0 0 16 16"
-              >
-                <path d="M8 0C3.6 0 0 3.6 0 8c0 4 2.9 7.3 6.8 7.9v-5.6h-2V8h2V6.2c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.3V8h2.2l-.4 2.3H9.2v5.6C13.1 15.3 16 12 16 8c0-4.4-3.6-8-8-8Z"></path>
-              </svg>
+            {/* Facebook */}
+            <button className="text-blue-700 font-semibold text-sm hover:underline">
               Log in with Facebook
             </button>
 
-            {/* Forgot Password */}
-            <a
-              href="/accounts/password/reset/"
+            <Link
+              to="/forgot-password"
               className="text-xs text-blue-500 mt-1"
             >
               Forgot password?
-            </a>
+            </Link>
           </div>
 
-          {/* Sign Up Prompt */}
           <div className="p-4 w-full text-center text-sm">
             Don’t have an account?{" "}
             <Link to="/register" className="text-blue-500 font-semibold">

@@ -67,10 +67,14 @@ const Navbar = () => {
         </Link>
 
 
-        <div className={itemClass(false)}>
+        <Link
+          to="/reels"
+          className={itemClass(isActive("/reels"))}
+        >
           <FiFilm size={24} />
           <span>Reels</span>
-        </div>
+        </Link>
+
 
         <Link to="/messages" className={itemClass(isActive("/messages"))}>
           <FiSend size={24} />

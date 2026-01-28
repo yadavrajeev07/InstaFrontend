@@ -10,6 +10,7 @@ import Chat from "../pages/Chat";
 import Search from "../pages/Search";
 import Explore from "../pages/Explore";
 import Notifications from "../pages/Notifications";
+import Reels from "../pages/Reels";
 const AppRoutes = () => {
   return (
   <Routes>
@@ -77,6 +78,15 @@ const AppRoutes = () => {
     </PrivateRoute>
   }
 />
+<Route
+  path="/reels"
+  element={
+    <PrivateRoute>
+      <Reels />
+    </PrivateRoute>
+  }
+/>
+
 
 </Routes>
   );
