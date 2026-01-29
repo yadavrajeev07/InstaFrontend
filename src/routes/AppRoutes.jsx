@@ -11,6 +11,9 @@ import Search from "../pages/Search";
 import Explore from "../pages/Explore";
 import Notifications from "../pages/Notifications";
 import Reels from "../pages/Reels";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
+import EditProfile from "../pages/EditProfile";
 const AppRoutes = () => {
   return (
   <Routes>
@@ -20,6 +23,10 @@ const AppRoutes = () => {
   {/* Login/Register */}
   <Route path="/login" element={<Login />} />
   <Route path="/register" element={<Register />} />
+ 
+  <Route path="/forgotpassword" element={<ForgotPassword />} />
+  <Route path="/reset-password" element={<ResetPassword />} />
+  <Route path="/edit-profile" element={<EditProfile />} />
 
   {/* Protected routes */}
   <Route

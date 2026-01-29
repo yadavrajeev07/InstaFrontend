@@ -3,12 +3,14 @@ import { usePosts } from "../context/PostContext";
 import { useState } from "react";
 import PostModal from "../components/PostModal";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
+
 
 const Profile = () => {
   const { user } = useAuth();
   const { posts } = usePosts();
   const [selectedPost, setSelectedPost] = useState(null);
-
+const navigate = useNavigate();
   const userPosts = posts.filter((post) => post.username === user?.username);
   const postCount = userPosts.length;
   const followerCount = user?.followers || 0;
@@ -22,8 +24,9 @@ const Profile = () => {
   };
 
   const handleEditProfile = () => {
-    console.log("Edit profile clicked");
+    navigate("/edit-profile");
   };
+    
 
   const handleViewArchive = () => {
     console.log("View archive clicked");

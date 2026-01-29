@@ -93,7 +93,7 @@ const Landing = () => {
             >
               <input
                 type="text"
-                placeholder="Phone number, username or email"
+                placeholder=" username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full p-2 bg-gray-100 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 text-sm"
@@ -129,7 +129,7 @@ const Landing = () => {
             </button>
 
             <Link
-              to="/forgot-password"
+              to="/forgotpassword"
               className="text-xs text-blue-500 mt-1"
             >
               Forgot password?
