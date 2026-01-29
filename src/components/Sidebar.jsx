@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const suggestions = [
   {
@@ -22,25 +23,27 @@ const suggestions = [
 ];
 
 const Sidebar = () => {
+  const { user } = useAuth(); // Get real logged-in user
+
   return (
     <aside className="w-full">
       {/* Logged in user */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Link to="/profile">
-          <img
-            src="https://i.pravatar.cc/150?img=8"
-            className="w-11 h-11 rounded-full"
-            alt="me"
-          />
+            <img
+              src={user?.avatar || "/default-avatar.png"} // use real avatar or default
+              className="w-11 h-11 rounded-full"
+              alt={user?.username || "me"}
+            />
           </Link>
           
           <div>
             <Link to="/profile">
-              <p className="text-sm font-semibold">your_username</p>
+              <p className="text-sm font-semibold">{user?.username || "username"}</p>
             </Link>
             
-            <p className="text-xs text-gray-500">Your Name</p>
+            <p className="text-xs text-gray-500">{user?.fullName || "Full Name"}</p>
           </div>
         </div>
         <button className="text-blue-500 text-xs font-semibold">
@@ -59,10 +62,7 @@ const Sidebar = () => {
       {/* Suggestions list */}
       <div className="space-y-4">
         {suggestions.map((s) => (
-          <div
-            key={s.id}
-            className="flex items-center justify-between"
-          >
+          <div key={s.id} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img
                 src={s.avatar}
@@ -71,9 +71,7 @@ const Sidebar = () => {
               />
               <div>
                 <p className="text-sm font-semibold">{s.user}</p>
-                <p className="text-xs text-gray-400">
-                  Suggested for you
-                </p>
+                <p className="text-xs text-gray-400">Suggested for you</p>
               </div>
             </div>
 
