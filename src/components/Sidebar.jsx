@@ -1,96 +1,50 @@
-import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
 
-const suggestions = [
-  {
-    id: 1,
-    user: "john_doe",
-    name: "John",
-    avatar: "https://i.pravatar.cc/150?img=12",
-  },
-  {
-    id: 2,
-    user: "jane_smith",
-    name: "Jane",
-    avatar: "https://i.pravatar.cc/150?img=32",
-  },
-  {
-    id: 3,
-    user: "alex_91",
-    name: "Alex",
-    avatar: "https://i.pravatar.cc/150?img=45",
-  },
-];
+const SearchBar = ({ onSearch, onClear }) => {
+  const [query, setQuery] = useState("");
 
-const Sidebar = () => {
-  const { user } = useAuth(); // Get real logged-in user
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    onSearch(value);
+  };
+
+  const handleClear = () => {
+    setQuery("");
+    onClear();
+  };
 
   return (
-    <aside className="w-full">
-      {/* Logged in user */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <Link to="/profile">
-            <img
-              src={user?.avatar || "/default-avatar.png"} // use real avatar or default
-              className="w-11 h-11 rounded-full"
-              alt={user?.username || "me"}
-            />
-          </Link>
-          
-          <div>
-            <Link to="/profile">
-              <p className="text-sm font-semibold">{user?.username || "username"}</p>
-            </Link>
-            
-            <p className="text-xs text-gray-500">{user?.fullName || "Full Name"}</p>
-          </div>
-        </div>
-        <button className="text-blue-500 text-xs font-semibold">
-          Switch
+    <div className="relative">
+      <input
+        type="text"
+        placeholder="Search"
+        value={query}
+        onChange={handleChange}
+        className="w-full px-4 py-3 pl-12 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        autoFocus
+      />
+      <svg
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      {query && (
+        <button
+          onClick={handleClear}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
+          aria-label="Clear search"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
-      </div>
-
-      {/* Suggestions header */}
-      <div className="flex justify-between items-center mb-3">
-        <p className="text-sm font-semibold text-gray-500">
-          Suggestions For You
-        </p>
-        <button className="text-xs font-semibold">See All</button>
-      </div>
-
-      {/* Suggestions list */}
-      <div className="space-y-4">
-        {suggestions.map((s) => (
-          <div key={s.id} className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img
-                src={s.avatar}
-                className="w-8 h-8 rounded-full"
-                alt={s.user}
-              />
-              <div>
-                <p className="text-sm font-semibold">{s.user}</p>
-                <p className="text-xs text-gray-400">Suggested for you</p>
-              </div>
-            </div>
-
-            <button className="text-blue-500 text-xs font-semibold hover:text-blue-700">
-              Follow
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {/* Footer */}
-      <div className="mt-6 text-xs text-gray-400 space-x-2 leading-relaxed">
-        <span>About</span>·<span>Help</span>·<span>Press</span>·
-        <span>API</span>·<span>Jobs</span>·<span>Privacy</span>·
-        <span>Terms</span>
-        <p className="mt-3">© 2026 INSTAGRAM CLONE</p>
-      </div>
-    </aside>
+      )}
+    </div>
   );
 };
 
-export default Sidebar;
+export default SearchBar;

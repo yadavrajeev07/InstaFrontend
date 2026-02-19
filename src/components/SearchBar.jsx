@@ -48,3 +48,8 @@ const SearchBar = ({ onSearch, onClear }) => {
 };
 
 export default SearchBar;
+
+
+
+
+
